@@ -1,0 +1,158 @@
+(venv) PS C:\Users\trend\PycharmProjects\NewsPortal\NewsPaper> pe manage.py shell
+pe : Имя "pe" не распознано как имя командлета, функции, файла сценария или выполняемой программы. Проверьте правильность написания имени, а также наличие и правильность пути, после ч 
+его повторите попытку.
+строка:1 знак:1
++ pe manage.py shell
++ ~~
+    + CategoryInfo          : ObjectNotFound: (pe:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+(venv) PS C:\Users\trend\PycharmProjects\NewsPortal\NewsPaper> py manage.py shell
+Python 3.11.1 (tags/v3.11.1:a7a450f, Dec  6 2022, 19:58:39) [MSC v.1934 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from news.models import *
+>>> u1 = User.objects.create_user(username='Bob')
+>>> u1
+<User: Bob>
+>>> u2 = User.objects.create_user(username='Ted')  
+>>> u2
+<User: Ted>
+>>> Author.objects.create(authorUser=u1)
+<Author: Author object (2)>
+>>> Author.objects.create(authorUser=u2)  
+<Author: Author object (3)>
+>>> Category.objects.create(name='sport')
+<Category: Category object (2)>
+>>> Category.objects.create(name='politics') 
+<Category: Category object (3)>
+>>> Category.objects.create(name='tehnologies')  
+<Category: Category object (4)>
+>>> Category.objects.create(name='gardening')   
+<Category: Category object (5)>
+>>> author = Author.objects.get(id=1)  
+>>> author2 = Author.objects.get(id=2) 
+>>> Post.objects.create(author=author, categoryType='NW', title='sometitle', text='blablabla')
+<Post: Post object (2)>
+>>> Post.objects.create(author=author2, categoryType='NW', title='sometitle', text='nyam_naym_naym')
+<Post: Post object (3)>
+>>> Post.objects.create(author=author, categoryType='AR', title='big', text='bigbigcat')             
+<Post: Post object (4)>
+>>> Post.objects.create(author=author2, categoryType='AR', title='small', text='smalldog')  
+<Post: Post object (5)>
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1)
+... Post.objects.get(id=2).postCategory.add(Category.objects.get(id=2)                     
+  File "<console>", line 2
+    Post.objects.get(id=2).postCategory.add(Category.objects.get(id=2)
+                                           ^
+SyntaxError: '(' was never closed
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1) 
+... 
+... Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1) 
+  File "<console>", line 3
+    Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1)
+                                           ^
+SyntaxError: '(' was never closed
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1))
+>>> Post.objects.get(id=2).postCategory.add(Category.objects.get(id=2)) 
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1), text='goodtext')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\query.py", line 669, in create
+    obj = self.model(**kwargs)
+          ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\base.py", line 541, in __init__
+    _setattr(self, field.name, rel_obj)
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\fields\related_descriptors.py", line 237, in __set__
+    raise ValueError(
+ValueError: Cannot assign "<Author: Author object (1)>": "Comment.commentUser" must be a "User" instance.
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, text='goodtext')
+<Comment: Comment object (2)>
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, text='+++++goodtext+++')
+<Comment: Comment object (3)>
+>>> Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='badtext')          
+<Comment: Comment object (4)>
+>>> Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='-------badtext----')
+<Comment: Comment object (5)>
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).dislike()
+>>> Comment.objects.get(id=1).rating   
+2
+>>> Comment.objects.get(id=2).rating 
+0
+>>> Comment.objects.get(id=2).dislike() 
+>>> Comment.objects.get(id=2).rating    
+-1
+>>> a = Author.obects.get(id=1) 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: type object 'Author' has no attribute 'obects'
+>>>  Author.obects.get(id=1)    
+  File "<console>", line 1
+    Author.obects.get(id=1)
+IndentationError: unexpected indent
+>>>  Author.objects.get(id=1)
+  File "<console>", line 1
+    Author.objects.get(id=1)
+IndentationError: unexpected indent
+>>>  Author.objects.get(id=2) 
+  File "<console>", line 1
+    Author.objects.get(id=2)
+IndentationError: unexpected indent
+>>> Author.objects.get(id=1)
+<Author: Author object (1)>
+>>> a = Author.objects.get(id=1)
+>>> a.update_rating()
+>>> a.ratingAuthor
+4
+>>> Author.objects.get(id=2)     
+<Author: Author object (2)>
+>>> b = Author.objects.get(id=2)
+>>> b.update_rating()            
+>>> b.ratingAuthor               
+0
+>>> for i in a:
+... i.ratingAuthor
+  File "<console>", line 2
+    i.ratingAuthor
+    ^
+IndentationError: expected an indented block after 'for' statement on line 1
+>>> for i in a:    
+...     i.ratingAuthor
+...     i.authorUser.username
+... 
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+TypeError: 'Author' object is not iterable
+>>> a = Author.objects.order_by('-raitingAuthor')
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\query.py", line 1645, in order_by
+    obj.query.add_ordering(*field_names)
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\sql\query.py", line 2202, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "C:\Users\trend\PycharmProjects\NewsPortal\venv\Lib\site-packages\django\db\models\sql\query.py", line 1709, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'raitingAuthor' into field. Choices are: authorUser, authorUser_id, id, post, ratingAuthor
+>>> a = Author.objects.order_by('-ratingAuthor')  
+>>> a
+<QuerySet [<Author: Author object (1)>, <Author: Author object (2)>, <Author: Author object (3)>]>
+>>> for i in a:
+...     i.ratingAuthor
+...     i.authorUser.username
+... 
+4
+'Sam'
+0
+'Bob'
+0
+'Ted'
+>>>
